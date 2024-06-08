@@ -86,8 +86,8 @@ def mostrar_grafo():
 
 
 def calcular_distancia():
-    nombre1 = entry_nombre1.get()  #obtiene lo ingresado en nombre1 y 2
-    nombre2 = entry_nombre2.get()
+    nombre1 = entry_nombre1.get().capitalize()  #obtiene lo ingresado en nombre1 y 2
+    nombre2 = entry_nombre2.get().capitalize()
     distancia = distancia_de_amistad(G, nombre1, nombre2) #llama a la funcion de la distancia minima
     label_resultado.configure(text=f"La distancia de amistad entre {nombre1} y {nombre2} es: {distancia}")
 
