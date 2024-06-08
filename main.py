@@ -1,5 +1,4 @@
 #librerias que usé
-#a ver
 import networkx as nx
 import customtkinter as ctk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
