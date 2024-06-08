@@ -1,0 +1,153 @@
+<html>
+<head>
+<title>main.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #7a7e85;}
+.s1 { color: #bcbec4;}
+.s2 { color: #cf8e6d;}
+.s3 { color: #bcbec4;}
+.s4 { color: #6aab73;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.py</font>
+</center></td></tr></table>
+<pre><span class="s0">#librerias que usé</span>
+
+<span class="s2">import </span><span class="s1">networkx </span><span class="s2">as </span><span class="s1">nx</span>
+<span class="s2">import </span><span class="s1">customtkinter </span><span class="s2">as </span><span class="s1">ctk</span>
+<span class="s2">from </span><span class="s1">matplotlib</span><span class="s3">.</span><span class="s1">backends</span><span class="s3">.</span><span class="s1">backend_tkagg </span><span class="s2">import </span><span class="s1">FigureCanvasTkAgg</span>
+<span class="s2">import </span><span class="s1">matplotlib</span><span class="s3">.</span><span class="s1">pyplot </span><span class="s2">as </span><span class="s1">plt</span>
+
+<span class="s0">#grafo que me inventé</span>
+
+<span class="s0">#nodoNahuel = {&quot;Nahuel&quot; : [&quot;Benja&quot; ,&quot;Kevin&quot; ,&quot;Mati&quot;]}</span>
+<span class="s0">#nodoBenja = {&quot;Benja&quot; : [&quot;Cande&quot;, &quot;Kevin&quot;]}</span>
+<span class="s0">#nodoKevin = {&quot;Kevin&quot; : [&quot;Cande&quot; ,&quot;Mateo&quot; ,&quot;Mati&quot;]}</span>
+<span class="s0">#nodoMati = {&quot;Mati&quot; : [&quot;Mateo&quot; ,&quot;Ezequiel&quot;]}</span>
+<span class="s0">#nodoMateo = {&quot;Mateo&quot; : [&quot;elMago&quot; ,&quot;Ezequiel&quot;]}</span>
+<span class="s0">#nodoCande = {&quot;Cande&quot; : [&quot;Mateo&quot; ,&quot;elMago&quot;]}</span>
+<span class="s0">#nodoEzequiel = {&quot;Ezequiel&quot; : [&quot;elMago&quot;]}</span>
+<span class="s0">#nodoElMago = {&quot;elMago&quot; : &quot;-&quot;}</span>
+
+
+<span class="s0">#diccionario con el valor de cada nivel de amistad</span>
+<span class="s1">grado_de_amistad </span><span class="s3">= {</span><span class="s4">&quot;amigo personal&quot; </span><span class="s3">: </span><span class="s5">3</span><span class="s3">, </span><span class="s4">&quot;conocido&quot; </span><span class="s3">: </span><span class="s5">2</span><span class="s3">, </span><span class="s4">&quot;compañero&quot; </span><span class="s3">: </span><span class="s5">1</span><span class="s3">}</span>
+
+<span class="s0">#creo un grafo dirigido</span>
+<span class="s1">G </span><span class="s3">= </span><span class="s1">nx</span><span class="s3">.</span><span class="s1">Graph</span><span class="s3">()</span>
+
+<span class="s0">#agrego los nodos</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_nodes_from</span><span class="s3">([</span><span class="s4">&quot;Nahuel&quot;</span><span class="s3">, </span><span class="s4">&quot;Benja&quot;</span><span class="s3">, </span><span class="s4">&quot;Kevin&quot;</span><span class="s3">, </span><span class="s4">&quot;Mati&quot;</span><span class="s3">, </span><span class="s4">&quot;Cande&quot;</span><span class="s3">, </span><span class="s4">&quot;Mateo&quot;</span><span class="s3">, </span><span class="s4">&quot;Ezequiel&quot;</span><span class="s3">, </span><span class="s4">&quot;elMago&quot;</span><span class="s3">])</span>
+<span class="s0">#agrego las aristas</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Nahuel&quot;</span><span class="s3">, </span><span class="s4">&quot;Benja&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;conocido&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Nahuel&quot;</span><span class="s3">, </span><span class="s4">&quot;Kevin&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;compañero&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Nahuel&quot;</span><span class="s3">, </span><span class="s4">&quot;Mati&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;amigo personal&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Benja&quot;</span><span class="s3">, </span><span class="s4">&quot;Cande&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;conocido&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Benja&quot;</span><span class="s3">, </span><span class="s4">&quot;Kevin&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;amigo personal&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Kevin&quot;</span><span class="s3">, </span><span class="s4">&quot;Cande&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;compañero&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Kevin&quot;</span><span class="s3">, </span><span class="s4">&quot;Mateo&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;amigo personal&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Kevin&quot;</span><span class="s3">, </span><span class="s4">&quot;Mati&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;conocido&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Mati&quot;</span><span class="s3">, </span><span class="s4">&quot;Mateo&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;amigo personal&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Mati&quot;</span><span class="s3">, </span><span class="s4">&quot;Ezequiel&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;compañero&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Mateo&quot;</span><span class="s3">, </span><span class="s4">&quot;elMago&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;conocido&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Mateo&quot;</span><span class="s3">, </span><span class="s4">&quot;Ezequiel&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;amigo personal&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Cande&quot;</span><span class="s3">, </span><span class="s4">&quot;Mateo&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;conocido&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Cande&quot;</span><span class="s3">, </span><span class="s4">&quot;elMago&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;amigo personal&quot;</span><span class="s3">)</span>
+<span class="s1">G</span><span class="s3">.</span><span class="s1">add_edge</span><span class="s3">(</span><span class="s4">&quot;Ezequiel&quot;</span><span class="s3">, </span><span class="s4">&quot;elMago&quot;</span><span class="s3">, </span><span class="s1">amistad </span><span class="s3">= </span><span class="s4">&quot;compañero&quot;</span><span class="s3">)</span>
+
+<span class="s0">#almaceno en &quot;valor&quot; el grado de amistad en numero</span>
+<span class="s2">for </span><span class="s1">u</span><span class="s3">, </span><span class="s1">v</span><span class="s3">, </span><span class="s1">data </span><span class="s2">in </span><span class="s1">G</span><span class="s3">.</span><span class="s1">edges</span><span class="s3">(</span><span class="s1">data </span><span class="s3">= </span><span class="s2">True</span><span class="s3">):</span>
+    <span class="s1">data</span><span class="s3">[</span><span class="s4">&quot;valor&quot;</span><span class="s3">] = </span><span class="s1">grado_de_amistad</span><span class="s3">[</span><span class="s1">data</span><span class="s3">[</span><span class="s4">&quot;amistad&quot;</span><span class="s3">]]</span>
+
+<span class="s0">#uso la funcion de Nx para el camino de mayor costo</span>
+<span class="s2">def </span><span class="s1">distancia_de_amistad </span><span class="s3">(</span><span class="s1">G</span><span class="s3">, </span><span class="s1">source</span><span class="s3">, </span><span class="s1">target</span><span class="s3">):</span>
+    <span class="s2">try</span><span class="s3">:</span>
+        <span class="s1">distancia </span><span class="s3">= </span><span class="s1">nx</span><span class="s3">.</span><span class="s1">shortest_path_length</span><span class="s3">(</span><span class="s1">G</span><span class="s3">, </span><span class="s1">source </span><span class="s3">= </span><span class="s1">source</span><span class="s3">, </span><span class="s1">target </span><span class="s3">= </span><span class="s1">target</span><span class="s3">, </span><span class="s1">weight </span><span class="s3">= </span><span class="s4">&quot;valor&quot;</span><span class="s3">)</span>
+        <span class="s2">return </span><span class="s1">distancia</span>
+    <span class="s2">except </span><span class="s1">nx</span><span class="s3">.</span><span class="s1">NetworkXNoPath</span><span class="s3">:</span>
+        <span class="s2">return </span><span class="s1">float</span><span class="s3">(</span><span class="s4">&quot;inf&quot;</span><span class="s3">)</span>
+
+<span class="s0">#si quieren mostrar en consola usan esto:</span>
+<span class="s0">#print(&quot;introduce un nombre: &quot;)</span>
+<span class="s0">#nombre1 = input()</span>
+<span class="s0">#print(&quot;Introduce otro nombre: &quot;)</span>
+<span class="s0">#nombre2 = input()</span>
+<span class="s0">#print(&quot;la distancia de amistad entre esas dos personas es: &quot;, distancia_de_amistad(G, nombre1, nombre2))</span>
+
+
+
+<span class="s2">def </span><span class="s1">mostrar_grafo</span><span class="s3">():</span>
+    <span class="s1">fig</span><span class="s3">, </span><span class="s1">ax </span><span class="s3">= </span><span class="s1">plt</span><span class="s3">.</span><span class="s1">subplots</span><span class="s3">(</span><span class="s1">figsize</span><span class="s3">=(</span><span class="s5">8</span><span class="s3">, </span><span class="s5">6</span><span class="s3">))  </span><span class="s0">#creo la figura usando matplotlib, el tamaño es en pulgadas ojo</span>
+
+    <span class="s1">pos </span><span class="s3">= </span><span class="s1">nx</span><span class="s3">.</span><span class="s1">spring_layout</span><span class="s3">(</span><span class="s1">G</span><span class="s3">, </span><span class="s1">seed</span><span class="s3">=</span><span class="s5">42</span><span class="s3">)   </span><span class="s0">#aca se puede cambiar el layout</span>
+
+
+    <span class="s1">node_colors </span><span class="s3">= [</span><span class="s1">G</span><span class="s3">.</span><span class="s1">degree</span><span class="s3">(</span><span class="s1">n</span><span class="s3">) </span><span class="s2">for </span><span class="s1">n </span><span class="s2">in </span><span class="s1">G</span><span class="s3">.</span><span class="s1">nodes</span><span class="s3">()]     </span><span class="s0">#segun el grado de nodo uso un color diferente, esto lo pueden sacar si quieren</span>
+    <span class="s1">node_sizes </span><span class="s3">= [</span><span class="s5">700 </span><span class="s3">+ </span><span class="s5">100 </span><span class="s3">* </span><span class="s1">G</span><span class="s3">.</span><span class="s1">degree</span><span class="s3">(</span><span class="s1">n</span><span class="s3">) </span><span class="s2">for </span><span class="s1">n </span><span class="s2">in </span><span class="s1">G</span><span class="s3">.</span><span class="s1">nodes</span><span class="s3">()]  </span><span class="s0">#esto hace que los nodos sean mas grandes segun el grado, tmb lo sacan si quieren</span>
+
+    <span class="s1">nx</span><span class="s3">.</span><span class="s1">draw</span><span class="s3">(</span><span class="s1">G</span><span class="s3">, </span><span class="s1">pos</span><span class="s3">, </span><span class="s1">with_labels</span><span class="s3">=</span><span class="s2">True</span><span class="s3">, </span><span class="s1">node_color</span><span class="s3">=</span><span class="s1">node_colors</span><span class="s3">, </span><span class="s1">node_size</span><span class="s3">=</span><span class="s1">node_sizes</span><span class="s3">,  </span><span class="s0">#dibuja el grafo G utilizando las pociones &quot;Pos&quot;</span>
+            <span class="s1">cmap</span><span class="s3">=</span><span class="s1">plt</span><span class="s3">.</span><span class="s1">cm</span><span class="s3">.</span><span class="s1">viridis</span><span class="s3">, </span><span class="s1">font_weight</span><span class="s3">=</span><span class="s4">'bold'</span><span class="s3">, </span><span class="s1">edge_color</span><span class="s3">=</span><span class="s4">'gray'</span><span class="s3">, </span><span class="s1">ax</span><span class="s3">=</span><span class="s1">ax</span><span class="s3">)</span>
+
+
+    <span class="s1">labels </span><span class="s3">= </span><span class="s1">nx</span><span class="s3">.</span><span class="s1">get_edge_attributes</span><span class="s3">(</span><span class="s1">G</span><span class="s3">, </span><span class="s4">'valor'</span><span class="s3">) </span><span class="s0">#obtiene un diccionario de etiquetas para las aristas</span>
+    <span class="s1">nx</span><span class="s3">.</span><span class="s1">draw_networkx_edge_labels</span><span class="s3">(</span><span class="s1">G</span><span class="s3">, </span><span class="s1">pos</span><span class="s3">, </span><span class="s1">edge_labels</span><span class="s3">=</span><span class="s1">labels</span><span class="s3">, </span><span class="s1">font_color</span><span class="s3">=</span><span class="s4">'red'</span><span class="s3">, </span><span class="s1">ax</span><span class="s3">=</span><span class="s1">ax</span><span class="s3">)</span>
+
+    <span class="s1">canvas </span><span class="s3">= </span><span class="s1">FigureCanvasTkAgg</span><span class="s3">(</span><span class="s1">fig</span><span class="s3">, </span><span class="s1">master</span><span class="s3">=</span><span class="s1">frame_grafo</span><span class="s3">)  </span><span class="s0">#genera un widget para la GUI</span>
+    <span class="s1">canvas</span><span class="s3">.</span><span class="s1">draw</span><span class="s3">()</span>
+    <span class="s1">canvas</span><span class="s3">.</span><span class="s1">get_tk_widget</span><span class="s3">().</span><span class="s1">pack</span><span class="s3">(</span><span class="s1">side</span><span class="s3">=</span><span class="s1">ctk</span><span class="s3">.</span><span class="s1">TOP</span><span class="s3">, </span><span class="s1">fill</span><span class="s3">=</span><span class="s1">ctk</span><span class="s3">.</span><span class="s1">BOTH</span><span class="s3">, </span><span class="s1">expand</span><span class="s3">=</span><span class="s5">1</span><span class="s3">)</span>
+
+
+
+<span class="s2">def </span><span class="s1">calcular_distancia</span><span class="s3">():</span>
+    <span class="s1">nombre1 </span><span class="s3">= </span><span class="s1">entry_nombre1</span><span class="s3">.</span><span class="s1">get</span><span class="s3">()  </span><span class="s0">#obtiene lo ingresado en nombre1 y 2</span>
+    <span class="s1">nombre2 </span><span class="s3">= </span><span class="s1">entry_nombre2</span><span class="s3">.</span><span class="s1">get</span><span class="s3">()</span>
+    <span class="s1">distancia </span><span class="s3">= </span><span class="s1">distancia_de_amistad</span><span class="s3">(</span><span class="s1">G</span><span class="s3">, </span><span class="s1">nombre1</span><span class="s3">, </span><span class="s1">nombre2</span><span class="s3">) </span><span class="s0">#llama a la funcion de la distancia minima</span>
+    <span class="s1">label_resultado</span><span class="s3">.</span><span class="s1">configure</span><span class="s3">(</span><span class="s1">text</span><span class="s3">=</span><span class="s4">f&quot;La distancia de amistad entre </span><span class="s2">{</span><span class="s1">nombre1</span><span class="s2">} </span><span class="s4">y </span><span class="s2">{</span><span class="s1">nombre2</span><span class="s2">} </span><span class="s4">es: </span><span class="s2">{</span><span class="s1">distancia</span><span class="s2">}</span><span class="s4">&quot;</span><span class="s3">)</span>
+
+
+
+<span class="s1">ventana </span><span class="s3">= </span><span class="s1">ctk</span><span class="s3">.</span><span class="s1">CTk</span><span class="s3">()</span>
+<span class="s1">ventana</span><span class="s3">.</span><span class="s1">title</span><span class="s3">(</span><span class="s4">&quot;Distancia de Amistad&quot;</span><span class="s3">)  </span><span class="s0">#titulo de la ventana</span>
+
+
+<span class="s1">frame_entrada </span><span class="s3">= </span><span class="s1">ctk</span><span class="s3">.</span><span class="s1">CTkFrame</span><span class="s3">(</span><span class="s1">ventana</span><span class="s3">)  </span><span class="s0">#crea un marco dentro de la ventana principal</span>
+<span class="s1">frame_entrada</span><span class="s3">.</span><span class="s1">pack</span><span class="s3">(</span><span class="s1">pady</span><span class="s3">=</span><span class="s5">20</span><span class="s3">, </span><span class="s1">padx</span><span class="s3">=</span><span class="s5">20</span><span class="s3">, </span><span class="s1">fill</span><span class="s3">=</span><span class="s4">&quot;both&quot;</span><span class="s3">, </span><span class="s1">expand</span><span class="s3">=</span><span class="s2">True</span><span class="s3">)</span>
+
+<span class="s1">label_nombre1 </span><span class="s3">= </span><span class="s1">ctk</span><span class="s3">.</span><span class="s1">CTkLabel</span><span class="s3">(</span><span class="s1">frame_entrada</span><span class="s3">, </span><span class="s1">text</span><span class="s3">=</span><span class="s4">&quot;Introduce un nombre:&quot;</span><span class="s3">) </span><span class="s0">#crea este texto en el marco nuevo</span>
+<span class="s1">label_nombre1</span><span class="s3">.</span><span class="s1">pack</span><span class="s3">(</span><span class="s1">pady</span><span class="s3">=</span><span class="s5">5</span><span class="s3">)</span>
+
+<span class="s1">entry_nombre1 </span><span class="s3">= </span><span class="s1">ctk</span><span class="s3">.</span><span class="s1">CTkEntry</span><span class="s3">(</span><span class="s1">frame_entrada</span><span class="s3">)</span>
+<span class="s1">entry_nombre1</span><span class="s3">.</span><span class="s1">pack</span><span class="s3">(</span><span class="s1">pady</span><span class="s3">=</span><span class="s5">5</span><span class="s3">)</span>
+
+<span class="s1">label_nombre2 </span><span class="s3">= </span><span class="s1">ctk</span><span class="s3">.</span><span class="s1">CTkLabel</span><span class="s3">(</span><span class="s1">frame_entrada</span><span class="s3">, </span><span class="s1">text</span><span class="s3">=</span><span class="s4">&quot;Introduce otro nombre:&quot;</span><span class="s3">) </span><span class="s0">#otro texto</span>
+<span class="s1">label_nombre2</span><span class="s3">.</span><span class="s1">pack</span><span class="s3">(</span><span class="s1">pady</span><span class="s3">=</span><span class="s5">5</span><span class="s3">)</span>
+
+<span class="s1">entry_nombre2 </span><span class="s3">= </span><span class="s1">ctk</span><span class="s3">.</span><span class="s1">CTkEntry</span><span class="s3">(</span><span class="s1">frame_entrada</span><span class="s3">)</span>
+<span class="s1">entry_nombre2</span><span class="s3">.</span><span class="s1">pack</span><span class="s3">(</span><span class="s1">pady</span><span class="s3">=</span><span class="s5">5</span><span class="s3">)</span>
+
+<span class="s1">button_calcular </span><span class="s3">= </span><span class="s1">ctk</span><span class="s3">.</span><span class="s1">CTkButton</span><span class="s3">(</span><span class="s1">frame_entrada</span><span class="s3">, </span><span class="s1">text</span><span class="s3">=</span><span class="s4">&quot;Calcular distancia&quot;</span><span class="s3">, </span><span class="s1">command</span><span class="s3">=</span><span class="s1">calcular_distancia</span><span class="s3">)</span>
+<span class="s1">button_calcular</span><span class="s3">.</span><span class="s1">pack</span><span class="s3">(</span><span class="s1">pady</span><span class="s3">=</span><span class="s5">10</span><span class="s3">)   </span><span class="s0">#crea un boton q al presionarlo llama a la funcion calcular distancia</span>
+
+<span class="s1">label_resultado </span><span class="s3">= </span><span class="s1">ctk</span><span class="s3">.</span><span class="s1">CTkLabel</span><span class="s3">(</span><span class="s1">frame_entrada</span><span class="s3">, </span><span class="s1">text</span><span class="s3">=</span><span class="s4">&quot;&quot;</span><span class="s3">) </span><span class="s0">#muestra el resultado dentro de eso</span>
+<span class="s1">label_resultado</span><span class="s3">.</span><span class="s1">pack</span><span class="s3">(</span><span class="s1">pady</span><span class="s3">=</span><span class="s5">10</span><span class="s3">)</span>
+
+<span class="s1">frame_grafo </span><span class="s3">= </span><span class="s1">ctk</span><span class="s3">.</span><span class="s1">CTkFrame</span><span class="s3">(</span><span class="s1">ventana</span><span class="s3">)</span>
+<span class="s1">frame_grafo</span><span class="s3">.</span><span class="s1">pack</span><span class="s3">(</span><span class="s1">pady</span><span class="s3">=</span><span class="s5">20</span><span class="s3">, </span><span class="s1">padx</span><span class="s3">=</span><span class="s5">20</span><span class="s3">, </span><span class="s1">fill</span><span class="s3">=</span><span class="s4">&quot;both&quot;</span><span class="s3">, </span><span class="s1">expand</span><span class="s3">=</span><span class="s2">True</span><span class="s3">)</span>
+
+
+
+<span class="s0">#muestra el grafo</span>
+<span class="s1">mostrar_grafo</span><span class="s3">()</span>
+
+<span class="s0">#genera un loop para q no se cierre la ventana</span>
+<span class="s1">ventana</span><span class="s3">.</span><span class="s1">mainloop</span><span class="s3">()</span>
+
+</pre>
+</body>
+</html>
