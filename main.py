@@ -4,6 +4,8 @@ import networkx as nx
 import customtkinter as ctk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
+import openpyxl as op
+
 
 #grafo que me inventé
 
@@ -16,31 +18,66 @@ import matplotlib.pyplot as plt
 #nodoEzequiel = {"Ezequiel" : ["elMago"]}
 #nodoElMago = {"elMago" : "-"}
 
+class Grafo:
+    def __init__(self, nombre):
+        ws = op.load_workbook(nombre)
+        wb = ws.active
+        self.g = nx.Graph()
+        agregar = [wb.cell(row=i, column=1).value for i in range(1, wb.max_row +1)]
+        if agregar[wb.max_row-1] is None:
+            agregar.remove(agregar[wb.max_row-1])
+        self.g.add_nodes_from(agregar)
+        #while wb['A{}'.format(i)].value != None:
+            #agregar = wb.cell(row=i, column=1).values for i in range(1, wb.max_row + 1)
+            #self.g.add_node([agregar])
+            #i += 1
+        j = 1
+        while wb['A{}'.format(j)].value is not None:
+            values = [wb.cell(row=j, column=c).value for c in range(1, wb.max_column + 1)]
+            nodo = values[0]
+            p = 1
+            while values[p] != None:
+                if self.g.has_edge(nodo, values[p]) == False :
+                    if self.g.has_node(values[p]) == True :
+                        self.g.add_edge(nodo, values[p], amistad=values[p+1])
+                if (p+2 >= values.__len__()):
+                    break
+                p += 2
+            j += 1
+    def getGraph(self):
+        return self.g
+
+a1 = Grafo('Prueba.xlsx')
+
+G=a1.getGraph()
+
+
+
+
 
 #diccionario con el valor de cada nivel de amistad
 grado_de_amistad = {"amigo personal" : 3, "conocido" : 2, "compañero" : 1}
 
 #creo un grafo dirigido
-G = nx.Graph()
+#G = nx.Graph()
 
 #agrego los nodos
-G.add_nodes_from(["Nahuel", "Benja", "Kevin", "Mati", "Cande", "Mateo", "Ezequiel", "elMago"])
+#G.add_nodes_from(["Nahuel", "Benja", "Kevin", "Mati", "Cande", "Mateo", "Ezequiel", "elMago"])
 #agrego las aristas
-G.add_edge("Nahuel", "Benja", amistad = "conocido")
-G.add_edge("Nahuel", "Kevin", amistad = "compañero")
-G.add_edge("Nahuel", "Mati", amistad = "amigo personal")
-G.add_edge("Benja", "Cande", amistad = "conocido")
-G.add_edge("Benja", "Kevin", amistad = "amigo personal")
-G.add_edge("Kevin", "Cande", amistad = "compañero")
-G.add_edge("Kevin", "Mateo", amistad = "amigo personal")
-G.add_edge("Kevin", "Mati", amistad = "conocido")
-G.add_edge("Mati", "Mateo", amistad = "amigo personal")
-G.add_edge("Mati", "Ezequiel", amistad = "compañero")
-G.add_edge("Mateo", "elMago", amistad = "conocido")
-G.add_edge("Mateo", "Ezequiel", amistad = "amigo personal")
-G.add_edge("Cande", "Mateo", amistad = "conocido")
-G.add_edge("Cande", "elMago", amistad = "amigo personal")
-G.add_edge("Ezequiel", "elMago", amistad = "compañero")
+#G.add_edge("Nahuel", "Benja", amistad = "conocido")
+#G.add_edge("Nahuel", "Kevin", amistad = "compañero")
+#G.add_edge("Nahuel", "Mati", amistad = "amigo personal")
+#G.add_edge("Benja", "Kevin", amistad = "amigo personal")
+#G.add_edge("Kevin", "Cande", amistad = "compañero")
+#G.add_edge("Kevin", "Mateo", amistad = "amigo personal")
+#G.add_edge("Kevin", "Mati", amistad = "conocido")
+#G.add_edge("Mati", "Mateo", amistad = "amigo personal")
+#G.add_edge("Mati", "Ezequiel", amistad = "compañero")
+#G.add_edge("Mateo", "elMago", amistad = "conocido")
+#G.add_edge("Mateo", "Ezequiel", amistad = "amigo personal")
+#G.add_edge("Cande", "Mateo", amistad = "conocido")
+#G.add_edge("Cande", "elMago", amistad = "amigo personal")
+#G.add_edge("Ezequiel", "elMago", amistad = "compañero")
 
 #almaceno en "valor" el grado de amistad en numero
 for u, v, data in G.edges(data = True):
@@ -49,7 +86,7 @@ for u, v, data in G.edges(data = True):
 #uso la funcion de Nx para el camino de mayor costo
 def distancia_de_amistad (G, source, target):
     try:
-        distancia = nx.shortest_path_length(G, source = source, target = target, weight = "valor")
+        distancia = nx.shortest_path_length(G, source=source, target=target, weight="valor")
         return distancia
     except nx.NetworkXNoPath:
         return float("inf")
