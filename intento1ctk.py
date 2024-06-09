@@ -1,9 +1,11 @@
-import tkinter as tk
-from tkinter import ttk
-from customtkinter import CTk, CTkToplevel, CTkComboBox, CTkFrame, CTkLabel, CTkEntry, CTkButton
+import networkx as nx
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
+from customtkinter import *
+#CTk, CTkToplevel, CTkComboBox, CTkFrame, CTkLabel, CTkEntry, CTkButton, CTkLabel
 import main1 as pg
 
-#no funciona necesitaba guardarlo ignoren
+#no funciona todavia pero tenia q guardar el codigo
 class Window:
     def __init__(self):
         self.app = CTk()
@@ -43,7 +45,12 @@ class Window:
             frame_grafo = CTkFrame(g1)
             frame_grafo.pack(pady=20, padx=20, fill="both", expand=True)
         else:
-            print("bb")
+            g2 = CTkToplevel()
+            g2.geometry("600x400")
+            g2.title("Grafo 1")
+            frame_entrada2 = CTkFrame(g1)  
+            frame_entrada2.pack(pady=20, padx=20, fill="both", expand=True)
+            label_nombre1 = CTkLabel(frame_entrada2, text="grafo")
 
 if __name__ == "__main__":
     window = Window()
