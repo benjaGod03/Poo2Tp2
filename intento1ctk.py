@@ -3,7 +3,7 @@ from tkinter import ttk
 from customtkinter import CTk, CTkToplevel, CTkComboBox, CTkFrame, CTkLabel, CTkEntry, CTkButton
 import main1 as pg
 
-
+#no funciona necesitaba guardarlo ignoren
 class Window:
     def __init__(self):
         self.app = CTk()
