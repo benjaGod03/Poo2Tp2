@@ -7,14 +7,13 @@ import main1 as pg
 class Window:
     def __init__(self):
         self.app = CTk()
-        self.app.geometry("800x600")
-
-        ttk.Label(self.app, text="Grafos",  
-                  background='grey', foreground="light blue",  
-                  font=("Times New Roman", 20), anchor='center').grid(row=0, column=1)
-        ttk.Label(self.app, text="Seleccione el Grafo :", 
-                  font=("Times New Roman", 15)).grid(column=0, 
-                  row=5, padx=10, pady=25)
+        self.app.geometry("400x200")
+        frame_prin = CTkFrame(self.app)  
+        frame_prin.pack(pady=20, padx=20, fill="both", expand=True)
+        label_titl = CTkLabel(frame_prin, text="Grafos", font=("Times New Roman", 20), anchor='center')
+        label_titl.pack(pady=5)
+        label_sub = CTkLabel(frame_prin, text="Seleccione el Grafo :",font=("Times New Roman", 15)) 
+        label_sub.pack(pady=5)
 
         self.combobox = CTkComboBox(master=self.app, values=["Grafo 1", "Grafo 2"], fg_color="#0093E9", 
                                      border_color="#FBAB7E", dropdown_fg_color="#0093E9", command=self.opciones)
