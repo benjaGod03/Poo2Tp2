@@ -1,8 +1,11 @@
+import customtkinter
 import networkx as nx
 from customtkinter import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import openpyxl as op
+from PIL import Image
+
 
 class Grafo:
     def __init__(self, nombrePag):
@@ -53,22 +56,22 @@ def distancia_de_amistad (G, source, target):
 
 
 def mostrar_grafo(frame_grafo, G):
-    fig, ax = plt.subplots(figsize=(8, 6))  
+    fig, ax = plt.subplots(figsize=(8, 6))
 
-    pos = nx.spring_layout(G, seed=42)   
+    pos = nx.spring_layout(G, seed=42)
 
 
-    node_colors = [G.degree(n) for n in G.nodes()]    
-    node_sizes = [700 + 100 * G.degree(n) for n in G.nodes()]  
+    node_colors = [G.degree(n) for n in G.nodes()]
+    node_sizes = [700 + 100 * G.degree(n) for n in G.nodes()]
 
-    nx.draw(G, pos, with_labels=True, node_color=node_colors, node_size=node_sizes,  
+    nx.draw(G, pos, with_labels=True, node_color=node_colors, node_size=node_sizes,
             cmap=plt.cm.viridis, font_weight='bold', edge_color='gray', ax=ax)
 
 
-    labels = nx.get_edge_attributes(G, 'valor') 
+    labels = nx.get_edge_attributes(G, 'valor')
     nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, font_color='red', ax=ax)
 
-    canvas = FigureCanvasTkAgg(fig, master=frame_grafo)  
+    canvas = FigureCanvasTkAgg(fig, master=frame_grafo)
     canvas.draw()
     canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
 
@@ -85,17 +88,23 @@ def calcular_distancia(G,n1,n2):
 
 class Window:
     def __init__(self):
-        self.app = CTk()
-        self.app.geometry("400x200")
-        frame_prin = CTkFrame(self.app)
+        my_image = customtkinter.CTkImage(light_image=Image.open('friends.png'),
+                                          size=(200, 200))
+        self.app = CTk(fg_color="#174873")
+        self.app.geometry("550x375")
+        frame_prin = CTkFrame(self.app, fg_color="#F2F2F2", border_color="#1E0342")
         frame_prin.pack(pady=20, padx=20, fill="both", expand=True)
-        label_titl = CTkLabel(frame_prin, text="Grafos", font=("Times New Roman", 20), anchor='center')
+
+        label_titl = CTkLabel(frame_prin, text="Friends app", font=("Georgia", 21), text_color="#F2F2F2", fg_color="#BF2424", anchor='center',corner_radius=8)
         label_titl.pack(pady=5)
-        label_sub = CTkLabel(frame_prin, text="Seleccione el Grafo :",font=("Times New Roman", 15))
+        label_sub = CTkLabel(frame_prin, text="Seleccione el Grafo de amistad:",font=("Georgia", 18), text_color="#F2F2F2", fg_color="#BF2424", corner_radius=8)
         label_sub.pack(pady=5)
 
-        self.combobox = CTkComboBox(master=self.app, values=["Grafo 1", "Grafo 2"], fg_color="#0093E9",
-                                     border_color="#FBAB7E", dropdown_fg_color="#0093E9", command=self.opciones)
+        foto_label = customtkinter.CTkLabel(frame_prin, text="", image=my_image)
+        foto_label.pack(pady=10)
+
+        self.combobox = CTkComboBox(master=frame_prin, values=["Grafo 1", "Grafo 2"], corner_radius=2, fg_color="#591212",
+                                     border_color="#BF2424", dropdown_hover_color="#BF2424", dropdown_fg_color="#295FA6", button_color="#BF2424", dropdown_text_color="#000000", command=self.opciones)
         self.combobox.place(relx=0.5, rely=0.5, anchor="center")
 
         self.app.mainloop()
@@ -107,22 +116,26 @@ class Window:
             self.mostrar2(g2)
 
     def mostrar2(self,g):
-        ventana = CTkToplevel()
-        ventana.geometry("600x400")
+        ventana = CTkToplevel(fg_color="#174873")
+        ventana.geometry("800x700")
         ventana.title("Grafo 1")
-        frame_entrada = CTkFrame(ventana)
+        my_image = customtkinter.CTkImage(light_image=Image.open('friends.png'),
+                                          size=(50, 50))
+        frame_entrada = CTkFrame(ventana, fg_color="#F2F2F2", border_color="#1E0342")
         frame_entrada.pack(pady=20, padx=20, fill="both", expand=True)
-        label_nombre1 = CTkLabel(frame_entrada, text="Introduce un nombre:")
+        label_nombre1 = CTkLabel(frame_entrada, text="Introduce un nombre:", font=("Georgia", 15), text_color="#BF2424")
         label_nombre1.pack(pady=5)
-        entry_nombre1 = CTkEntry(frame_entrada, width=200)
+        entry_nombre1 = CTkEntry(frame_entrada, width=200, fg_color="#174873")
         entry_nombre1.pack(pady=5)
-        label_nombre2 = CTkLabel(frame_entrada, text="Introduce otro nombre:")
+        label_nombre2 = CTkLabel(frame_entrada, text="Introduce otro nombre:", font=("Georgia", 15), text_color="#BF2424")
         label_nombre2.pack(pady=5)
-        entry_nombre2 = CTkEntry(frame_entrada, width=200)
+        entry_nombre2 = CTkEntry(frame_entrada, width=200,fg_color="#174873")
         entry_nombre2.pack(pady=5)
-        button_calcular = CTkButton(frame_entrada, text="Calcular distancia", command=lambda: label_resultado.configure(text=calcular_distancia(g,entry_nombre1,entry_nombre2)))
+        button_calcular = CTkButton(frame_entrada, text="Calcular distancia",fg_color="#BF2424", command=lambda: label_resultado.configure(text=calcular_distancia(g,entry_nombre1,entry_nombre2)))
         button_calcular.pack(pady=10)
-        label_resultado = CTkLabel(frame_entrada, text="")
+        foto_label = customtkinter.CTkLabel(frame_entrada, text="", image=my_image)
+        foto_label.pack(pady=10)
+        label_resultado = CTkLabel(frame_entrada, text="",text_color="#BF2424")
         label_resultado.pack(pady=10)
         frame_grafo = CTkFrame(ventana)
         frame_grafo.pack(pady=20, padx=20, fill="both", expand=True)
