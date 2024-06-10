@@ -1,7 +1,10 @@
 import networkx as nx
-import customtkinter as ctk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
+import Grafo as gr
+from tkinter import ttk
+#from customtkinter import CTk, CTkToplevel, CTkComboBox, CTkFrame, CTkLabel, CTkEntry, CTkButton
+from customtkinter import *
 import openpyxl as op
 
 class Grafo:
@@ -29,11 +32,9 @@ class Grafo:
     def getGraph(self):
         return self.g
 
-a1 = Grafo('Prueba.xlsx')
+a1 = Grafo('Pruebas\Prueba.xlsx')
 
 G=a1.getGraph()
-
-
 grado_de_amistad = {"amigo personal" : 3, "conocido" : 2, "compañero" : 1}
 
 for u, v, data in G.edges(data = True):
@@ -45,69 +46,83 @@ def distancia_de_amistad (G, source, target):
         return distancia
     except nx.NetworkXNoPath:
         return float("inf")
+    
+class main:
+    def mostrar_grafo():
+        fig, ax = plt.subplots(figsize=(8, 6))  
+
+        pos = nx.spring_layout(gr.G, seed=42)   
 
 
-def mostrar_grafo():
-    fig, ax = plt.subplots(figsize=(8, 6))  
+        node_colors = [gr.G.degree(n) for n in gr.G.nodes()]    
+        node_sizes = [700 + 100 * gr.G.degree(n) for n in gr.G.nodes()]  
 
-    pos = nx.spring_layout(G, seed=42)   
-
-
-    node_colors = [G.degree(n) for n in G.nodes()]    
-    node_sizes = [700 + 100 * G.degree(n) for n in G.nodes()]  
-
-    nx.draw(G, pos, with_labels=True, node_color=node_colors, node_size=node_sizes,  
+        nx.draw(gr.G, pos, with_labels=True, node_color=node_colors, node_size=node_sizes,  
             cmap=plt.cm.viridis, font_weight='bold', edge_color='gray', ax=ax)
 
 
-    labels = nx.get_edge_attributes(G, 'valor') 
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, font_color='red', ax=ax)
+        labels = nx.get_edge_attributes(gr.G, 'valor') 
+        nx.draw_networkx_edge_labels(gr.G, pos, edge_labels=labels, font_color='red', ax=ax)
 
-    canvas = FigureCanvasTkAgg(fig, master=frame_grafo)  
-    canvas.draw()
-    canvas.get_tk_widget().pack(side=ctk.TOP, fill=ctk.BOTH, expand=1)
-
-
-
-def calcular_distancia():
-    nombre1 = entry_nombre1.get().capitalize()  
-    nombre2 = entry_nombre2.get().capitalize()
-    distancia = distancia_de_amistad(G, nombre1, nombre2) 
-    label_resultado.configure(text=f"La distancia de amistad entre {nombre1} y {nombre2} es: {distancia}")
+        canvas = FigureCanvasTkAgg(fig, master=window.frame_grafo)  
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
 
 
 
-ventana = ctk.CTk()
-ventana.title("Distancia de Amistad")  
-
-frame_entrada = ctk.CTkFrame(ventana)  
-frame_entrada.pack(pady=20, padx=20, fill="both", expand=True)
-
-label_nombre1 = ctk.CTkLabel(frame_entrada, text="Introduce un nombre:")
-label_nombre1.pack(pady=5)
-
-entry_nombre1 = ctk.CTkEntry(frame_entrada)
-entry_nombre1.pack(pady=5)
-
-label_nombre2 = ctk.CTkLabel(frame_entrada, text="Introduce otro nombre:") 
-label_nombre2.pack(pady=5)
-
-entry_nombre2 = ctk.CTkEntry(frame_entrada)
-entry_nombre2.pack(pady=5)
-
-button_calcular = ctk.CTkButton(frame_entrada, text="Calcular distancia", command=calcular_distancia)
-button_calcular.pack(pady=10)   
-
-label_resultado = ctk.CTkLabel(frame_entrada, text="") 
-label_resultado.pack(pady=10)
-
-frame_grafo = ctk.CTkFrame(ventana)
-frame_grafo.pack(pady=20, padx=20, fill="both", expand=True)
+    def calcular_distancia():
+        nombre1 = window.entry_nombre1.get().capitalize()  
+        nombre2 = window.entry_nombre2.get().capitalize()
+        distancia = gr.distancia_de_amistad(gr.G, nombre1, nombre2) 
+        window.label_resultado.configure(text=f"La distancia de amistad entre {nombre1} y {nombre2} es: {distancia}")
 
 
 
+class Window:
+    def __init__(self):
+        self.app = CTk()
+        self.app.geometry("400x200")
+        frame_prin = CTkFrame(self.app)  
+        frame_prin.pack(pady=20, padx=20, fill="both", expand=True)
+        label_titl = CTkLabel(frame_prin, text="Grafos", font=("Times New Roman", 20), anchor='center')
+        label_titl.pack(pady=5)
+        label_sub = CTkLabel(frame_prin, text="Seleccione el Grafo :",font=("Times New Roman", 15)) 
+        label_sub.pack(pady=5)
 
-mostrar_grafo()
+        self.combobox = CTkComboBox(master=self.app, values=["Grafo 1", "Grafo 2"], fg_color="#0093E9", 
+                                     border_color="#FBAB7E", dropdown_fg_color="#0093E9", command=self.opciones)
+        self.combobox.place(relx=0.5, rely=0.5, anchor="center") 
 
-ventana.mainloop()
+        self.app.mainloop()
 
+    def opciones(self, value):
+        if value == "Grafo 1":
+            g1 = CTkToplevel()
+            g1.geometry("600x400")
+            g1.title("Grafo 1")
+            frame_entrada = CTkFrame(g1)  
+            frame_entrada.pack(pady=20, padx=20, fill="both", expand=True)
+            label_nombre1 = CTkLabel(frame_entrada, text="Introduce un nombre:")
+            label_nombre1.pack(pady=5)
+            entry_nombre1 = CTkEntry(frame_entrada, width=200)
+            entry_nombre1.pack(pady=5)
+            label_nombre2 = CTkLabel(frame_entrada, text="Introduce otro nombre:") 
+            label_nombre2.pack(pady=5)
+            entry_nombre2 = CTkEntry(frame_entrada, width=200)
+            entry_nombre2.pack(pady=5)
+            button_calcular = CTkButton(frame_entrada, text="Calcular distancia", command=main.calcular_distancia)
+            button_calcular.pack(pady=10)   
+            label_resultado = CTkLabel(frame_entrada, text="") 
+            label_resultado.pack(pady=10)
+            frame_grafo = CTkFrame(g1)
+            frame_grafo.pack(pady=20, padx=20, fill="both", expand=True)
+        else:
+            g2 = CTkToplevel()
+            g2.geometry("600x400")
+            g2.title("Grafo 1")
+            frame_entrada2 = CTkFrame(g1)  
+            frame_entrada2.pack(pady=20, padx=20, fill="both", expand=True)
+            label_nombre1 = CTkLabel(frame_entrada2, text="grafo")
+
+if __name__ == "__main__":
+    window = Window()
