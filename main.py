@@ -111,14 +111,14 @@ class Window:
 
     def opciones(self, value):
         if value == "Grafo 1":
-            self.mostrar2(g1)
+            self.mostrar2(g1, "Grafo 1")
         else:
-            self.mostrar2(g2)
+            self.mostrar2(g2, "Grafo 2")
 
-    def mostrar2(self,g):
+    def mostrar2(self,g, nombre):
         ventana = CTkToplevel(fg_color="#174873")
         ventana.geometry("800x700")
-        ventana.title("Grafo 1")
+        ventana.title(nombre)
         my_image = customtkinter.CTkImage(light_image=Image.open('friends.png'),
                                           size=(50, 50))
         frame_entrada = CTkFrame(ventana, fg_color="#F2F2F2", border_color="#1E0342")
